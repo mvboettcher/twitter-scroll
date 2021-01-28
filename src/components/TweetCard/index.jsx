@@ -1,13 +1,16 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { Card, CardContent, Paper, Typography } from '@material-ui/core'
+import { Card, CardContent, Paper, Typography, Link } from '@material-ui/core'
 
-import { displayPublishedDate } from '../../helpers'
+import { displayPublishedDate, linkChecker } from '../../helpers'
 import data from '../../data'
 
 export default function TweetCard() {
   const classes = useStyles()
   const image = data.entities.media.filter((m) => m.type === 'photo')[0]
+  const tweetBody = linkChecker(data.full_text)
+
+  console.log(tweetBody)
 
   return (
     <Card className={classes.root}>
@@ -25,18 +28,26 @@ export default function TweetCard() {
             {displayPublishedDate(data.created_at)}
           </Typography>
         </div>
-        <Typography variant="body2" component="p">
-          {data.full_text}
-        </Typography>
+        {/* DISPLAY TWEET BODY */}
+        {tweetBody.map((t, idx) => {
+          if (t.type === 'link') {
+            return (
+              <Link key={idx} href={t.text} variant="body2">
+                {t.text}
+              </Link>
+            )
+          } else {
+            return (
+              <Typography key={idx} variant="body2" component="p">
+                {t.text}
+              </Typography>
+            )
+          }
+        })}
+        {/* DISPLAY TWEET IMAGE (IF AVAILABLE) */}
         {image && (
           <Paper className={classes.imageContainer}>
-            <img
-              src={image.media_url}
-              placeholder={
-                <h2 style={{ fontWeight: 'bold', color: 'white' }}>picture</h2>
-              }
-              height={200}
-            />
+            <img src={image.media_url} height={200} />
           </Paper>
         )}
       </CardContent>
