@@ -1,14 +1,14 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import ReactPlayer from 'react-player'
 import {
   Card,
   CardContent,
   CardMedia,
-  Paper,
+  Grid,
   Typography,
   Link,
 } from '@material-ui/core'
-import ReactPlayer from 'react-player'
 import { displayPublishedDate, linkChecker } from '../../helpers'
 
 export default function TweetCard({ tweet }) {
@@ -26,21 +26,25 @@ export default function TweetCard({ tweet }) {
   return (
     <Card className={classes.root}>
       <CardContent>
-        <div className={classes.title}>
-          <Typography className={classes.userName}>
-            {tweet.user.name}
-          </Typography>
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            className={classes.screenName}
-          >
-            {`@${tweet.user.screen_name}`}
-          </Typography>
-          <Typography color="textSecondary" className={classes.date}>
-            {displayPublishedDate(tweet.created_at)}
-          </Typography>
-        </div>
+        <Grid container className={classes.header}>
+          <Grid item xs={12} sm={6}>
+            <Typography className={classes.userName}>
+              {tweet.user.name}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6} style={{ display: 'flex' }}>
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              className={classes.screenName}
+            >
+              {`@${tweet.user.screen_name}`}
+            </Typography>
+            <Typography color="textSecondary" className={classes.date}>
+              {displayPublishedDate(tweet.created_at)}
+            </Typography>
+          </Grid>
+        </Grid>
         {/* DISPLAY TWEET BODY */}
         {tweetBody.map((t, idx) => {
           if (t.type === 'link') {
@@ -57,10 +61,8 @@ export default function TweetCard({ tweet }) {
             )
           }
         })}
-        {/* DISPLAY IMAGE (IF AVAILABLE) */}
-        <div
-          style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
-        >
+        {/* DISPLAY MEDIA (IF AVAILABLE) */}
+        <CardMedia className={classes.mediaContainer}>
           {video && (
             <ReactPlayer
               style={{ borderRadius: 8 }}
@@ -80,7 +82,7 @@ export default function TweetCard({ tweet }) {
             />
             // </Paper>
           )}
-        </div>
+        </CardMedia>
       </CardContent>
     </Card>
   )
@@ -88,15 +90,14 @@ export default function TweetCard({ tweet }) {
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 275,
     marginTop: 40,
   },
-  title: {
-    display: 'flex',
+  header: {
+    paddingBottom: 10,
   },
   userName: {
-    fontWeight: 'bold',
     paddingRight: 4,
+    fontWeight: 'bold',
   },
   screenName: {
     alignSelf: 'center',
@@ -107,11 +108,19 @@ const useStyles = makeStyles({
   imageContainer: {
     display: 'flex',
     justifyContent: 'center',
-    backgroundColor: '#333',
     marginTop: 10,
     borderRadius: 8,
+    backgroundColor: '#333',
+  },
+  mediaContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    borderRadius: 8,
+    paddingTop: 16,
   },
   media: {
+    maxHeight: 400,
     borderRadius: 8,
   },
 })
