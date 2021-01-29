@@ -1,7 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Card, CardContent, Paper, Typography, Link } from '@material-ui/core'
-
 import { displayPublishedDate, linkChecker } from '../../helpers'
 
 export default function TweetCard({ tweet }) {

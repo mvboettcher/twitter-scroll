@@ -6,7 +6,6 @@ import TweetCard from '../TweetCard'
 
 function Feed({ screenName }) {
   const classes = useStyles()
-
   const [tweets, setTweets] = useState([])
   const [maxId, setMaxId] = useState(null)
   const [loading, setLoading] = useState(true)
