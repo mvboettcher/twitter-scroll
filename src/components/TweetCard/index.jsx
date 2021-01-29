@@ -8,17 +8,20 @@ import {
   Typography,
   Link,
 } from '@material-ui/core'
+import ReactPlayer from 'react-player'
 import { displayPublishedDate, linkChecker } from '../../helpers'
 
 export default function TweetCard({ tweet }) {
   const classes = useStyles()
   const tweetBody = linkChecker(tweet.full_text)
-  const image = tweet.entities.media
-    ? tweet.entities.media.filter((m) => m.type === 'photo')[0]
-    : null
-  const video = tweet.extended_entities.media
-    ? tweet.extended_entities.media.filter((m) => m.type === 'video')[0]
-    : null
+  const image =
+    tweet.entities && tweet.entities.media
+      ? tweet.entities.media.filter((m) => m.type === 'photo')[0]
+      : null
+  const video =
+    tweet.extended_entities && tweet.extended_entities.media
+      ? tweet.extended_entities.media.filter((m) => m.type === 'video')[0]
+      : null
 
   return (
     <Card className={classes.root}>
@@ -55,19 +58,29 @@ export default function TweetCard({ tweet }) {
           }
         })}
         {/* DISPLAY IMAGE (IF AVAILABLE) */}
-        {video && (
-          <CardMedia
-            component="iframe"
-            height={300}
-            image={video.video_info.variants[0].url}
-            title="Contemplative Reptile"
-          />
-        )}
-        {/* {image && (
-          <Paper className={classes.imageContainer}>
-            <img src={image.media_url} height={200} alt="" />
-          </Paper>
-        )} */}
+        <div
+          style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+        >
+          {video && (
+            <ReactPlayer
+              style={{ borderRadius: 8 }}
+              playing
+              loop
+              muted
+              url={video.video_info.variants[0].url}
+            />
+          )}
+          {!video && image && (
+            // <Paper className={classes.imageContainer}>
+            <img
+              className={classes.media}
+              src={image.media_url}
+              height={image.sizes.medium.h * 0.5}
+              alt=""
+            />
+            // </Paper>
+          )}
+        </div>
       </CardContent>
     </Card>
   )
@@ -99,7 +112,6 @@ const useStyles = makeStyles({
     borderRadius: 8,
   },
   media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
+    borderRadius: 8,
   },
 })

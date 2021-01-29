@@ -14,10 +14,10 @@ function App() {
 
   return (
     <Container maxWidth="sm" style={{ paddingBottom: 40 }}>
-      <TweetCard tweet={data} />
-      {/* <Menu value={value} handleChange={handleChange} />
+      {/* <TweetCard tweet={data} /> */}
+      <Menu value={value} handleChange={handleChange} />
       {value === 0 && <Feed screenName="dogfishbeer" />}
-      {value === 1 && <Feed screenName="BackpackerMag" />} */}
+      {value === 1 && <Feed screenName="BackpackerMag" />}
     </Container>
   )
 }
