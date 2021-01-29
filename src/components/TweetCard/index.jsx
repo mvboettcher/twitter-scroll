@@ -30,23 +30,21 @@ export default function TweetCard({ tweet }) {
           </Typography>
         </div>
         {/* DISPLAY TWEET BODY */}
-        <span>
-          {tweetBody.map((t, idx) => {
-            if (t.type === 'link') {
-              return (
-                <Link key={idx} href={t.text} variant="body2">
-                  {t.text}
-                </Link>
-              )
-            } else {
-              return (
-                <Typography key={idx} variant="body2" component="p">
-                  {t.text}
-                </Typography>
-              )
-            }
-          })}
-        </span>
+        {tweetBody.map((t, idx) => {
+          if (t.type === 'link') {
+            return (
+              <Link key={idx} href={t.text} variant="body2">
+                {t.text}
+              </Link>
+            )
+          } else {
+            return (
+              <Typography key={idx} variant="body2" component="p">
+                {t.text}
+              </Typography>
+            )
+          }
+        })}
         {/* DISPLAY IMAGE (IF AVAILABLE) */}
         {image && (
           <Paper className={classes.imageContainer}>

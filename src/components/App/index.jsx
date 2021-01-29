@@ -8,7 +8,7 @@ import TweetCard from '../TweetCard'
 
 function App() {
   const [value, setValue] = useState(0)
-  const [tweets, setTweets] = useState(null)
+  const [tweets, setTweets] = useState([])
   const [maxId, setMaxId] = useState(null)
 
   const handleChange = (event, newValue) => {
@@ -21,11 +21,15 @@ function App() {
         `http://localhost:5000/dogfishbeer${maxId ? '?max_id=' + maxId : ''}`
       )
       .then((res) => {
-        const data = res.data
-        const maxId = data[data.length - 1].id
+        let data = res.data
+        if (maxId) {
+          data = res.data.slice(1)
+        }
 
-        setTweets(data)
-        setMaxId(maxId)
+        const newMaxId = data[data.length - 1].id
+
+        setTweets([...tweets, ...data])
+        setMaxId(newMaxId)
       })
       .catch((err) => console.log(err))
   }
@@ -39,7 +43,7 @@ function App() {
   }
 
   return (
-    <Container maxWidth="sm">
+    <Container maxWidth="sm" style={{ paddingBottom: 60 }}>
       {tweets ? (
         tweets.map((tweet, idx) => <TweetCard tweet={tweet} key={idx} />)
       ) : (
