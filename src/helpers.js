@@ -13,7 +13,7 @@ export function displayPublishedDate(date) {
 }
 
 export function linkChecker(textToCheck) {
-  const expression = /(https?:\/\/)?[\w\-~]+(\.[\w\-~]+)+(\/[\w\-~@:%]*)*(#[\w\-]*)?(\?[^\s]*)?/gi
+  const expression = /(https?:\/\/)?[\w\-~]+(\.[\w\-~]+)+(\/[\w\-~@:%]*)*(#[\w-]*)?(\?[^\s]*)?/gi
   const regex = new RegExp(expression)
   const splitText = []
   let match = ''

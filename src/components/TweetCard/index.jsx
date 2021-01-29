@@ -59,7 +59,7 @@ export default function TweetCard({ tweet }) {
 const useStyles = makeStyles({
   root: {
     minWidth: 275,
-    marginTop: 60, //
+    marginTop: 40,
   },
   title: {
     display: 'flex',
