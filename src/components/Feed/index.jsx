@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { CircularProgress, Box } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 import TweetCard from '../TweetCard'
 
-function Feed({ value, index, screenName }) {
+function Feed({ screenName }) {
+  const classes = useStyles()
+
   const [tweets, setTweets] = useState([])
   const [maxId, setMaxId] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   const getTweets = () => {
     axios
@@ -22,6 +26,7 @@ function Feed({ value, index, screenName }) {
 
         setTweets([...tweets, ...data])
         setMaxId(newMaxId)
+        setLoading(false)
       })
       .catch((err) => console.log(err))
   }
@@ -30,19 +35,33 @@ function Feed({ value, index, screenName }) {
     getTweets()
   }, [])
 
-  return (
-    <Box
-      component="div"
-      style={{ marginBottom: 60 }}
-      display={value === index ? 'block' : 'none'}
-    >
-      {tweets ? (
-        tweets.map((tweet, idx) => <TweetCard tweet={tweet} key={idx} />)
-      ) : (
+  if (loading) {
+    return (
+      <div className={classes.loading}>
         <CircularProgress />
-      )}
-    </Box>
-  )
+      </div>
+    )
+  } else {
+    return (
+      <div className={classes.feedContainer}>
+        {tweets.map((tweet, idx) => (
+          <TweetCard tweet={tweet} key={idx} />
+        ))}
+      </div>
+    )
+  }
 }
+
+const useStyles = makeStyles({
+  loading: {
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  feedContainer: {
+    paddingTop: 60,
+  },
+})
 
 export default Feed
