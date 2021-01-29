@@ -3,17 +3,20 @@ import dayjs from 'dayjs'
 export function displayPublishedDate(date) {
   const now = dayjs()
   const createdAt = dayjs(date)
-  const diff = now.diff(createdAt, 'hour')
+  const hourDiff = now.diff(createdAt, 'hour')
+  const minDiff = now.diff(createdAt, 'minute')
 
-  if (diff < 24) {
-    return `${diff}h`
+  if (hourDiff < 1) {
+    return `${minDiff}min`
+  } else if (hourDiff < 24) {
+    return `${hourDiff}h`
   } else {
     return dayjs(date).format('MMM DD')
   }
 }
 
 export function linkChecker(textToCheck) {
-  const expression = /(https?:\/\/)?[\w\-~]+(\.[\w\-~]+)+(\/[\w\-~@:%]*)*(#[\w\-]*)?(\?[^\s]*)?/gi
+  const expression = /(https?:\/\/)?[\w\-~]+(\.[\w\-~]+)+(\/[\w\-~@:%]*)*(#[\w-]*)?(\?[^\s]*)?/gi
   const regex = new RegExp(expression)
   const splitText = []
   let match = ''

@@ -1,34 +1,50 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { Card, CardContent, Paper, Typography, Link } from '@material-ui/core'
-
+import ReactPlayer from 'react-player'
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Grid,
+  Typography,
+  Link,
+} from '@material-ui/core'
 import { displayPublishedDate, linkChecker } from '../../helpers'
 
 export default function TweetCard({ tweet }) {
   const classes = useStyles()
   const tweetBody = linkChecker(tweet.full_text)
-  const image = tweet.entities.media
-    ? tweet.entities.media.filter((m) => m.type === 'photo')[0]
-    : null
+  const image =
+    tweet.entities && tweet.entities.media
+      ? tweet.entities.media.filter((m) => m.type === 'photo')[0]
+      : null
+  const video =
+    tweet.extended_entities && tweet.extended_entities.media
+      ? tweet.extended_entities.media.filter((m) => m.type === 'video')[0]
+      : null
 
   return (
     <Card className={classes.root}>
       <CardContent>
-        <div className={classes.title}>
-          <Typography className={classes.userName}>
-            {tweet.user.name}
-          </Typography>
-          <Typography
-            variant="body2"
-            color="textSecondary"
-            className={classes.screenName}
-          >
-            {`@${tweet.user.screen_name}`}
-          </Typography>
-          <Typography color="textSecondary" className={classes.date}>
-            {displayPublishedDate(tweet.created_at)}
-          </Typography>
-        </div>
+        <Grid container className={classes.header}>
+          <Grid item xs={12} sm={6}>
+            <Typography className={classes.userName}>
+              {tweet.user.name}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6} style={{ display: 'flex' }}>
+            <Typography
+              variant="body2"
+              color="textSecondary"
+              className={classes.screenName}
+            >
+              {`@${tweet.user.screen_name}`}
+            </Typography>
+            <Typography color="textSecondary" className={classes.date}>
+              {displayPublishedDate(tweet.created_at)}
+            </Typography>
+          </Grid>
+        </Grid>
         {/* DISPLAY TWEET BODY */}
         {tweetBody.map((t, idx) => {
           if (t.type === 'link') {
@@ -45,12 +61,28 @@ export default function TweetCard({ tweet }) {
             )
           }
         })}
-        {/* DISPLAY IMAGE (IF AVAILABLE) */}
-        {image && (
-          <Paper className={classes.imageContainer}>
-            <img src={image.media_url} height={200} alt="" />
-          </Paper>
-        )}
+        {/* DISPLAY MEDIA (IF AVAILABLE) */}
+        <CardMedia className={classes.mediaContainer}>
+          {video && (
+            <ReactPlayer
+              style={{ borderRadius: 8 }}
+              playing
+              loop
+              muted
+              url={video.video_info.variants[0].url}
+            />
+          )}
+          {!video && image && (
+            // <Paper className={classes.imageContainer}>
+            <img
+              className={classes.media}
+              src={image.media_url}
+              height={image.sizes.medium.h * 0.5}
+              alt=""
+            />
+            // </Paper>
+          )}
+        </CardMedia>
       </CardContent>
     </Card>
   )
@@ -58,15 +90,14 @@ export default function TweetCard({ tweet }) {
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 275,
-    marginTop: 60, //
+    marginTop: 40,
   },
-  title: {
-    display: 'flex',
+  header: {
+    paddingBottom: 10,
   },
   userName: {
-    fontWeight: 'bold',
     paddingRight: 4,
+    fontWeight: 'bold',
   },
   screenName: {
     alignSelf: 'center',
@@ -77,8 +108,19 @@ const useStyles = makeStyles({
   imageContainer: {
     display: 'flex',
     justifyContent: 'center',
-    backgroundColor: '#333',
     marginTop: 10,
+    borderRadius: 8,
+    backgroundColor: '#333',
+  },
+  mediaContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    overflow: 'hidden',
+    borderRadius: 8,
+    paddingTop: 16,
+  },
+  media: {
+    maxHeight: 400,
     borderRadius: 8,
   },
 })
