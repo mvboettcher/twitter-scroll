@@ -54,6 +54,7 @@ function Feed({ value, index, classes, screenName }) {
 
   useEffect(() => {
     getTweets()
+
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
