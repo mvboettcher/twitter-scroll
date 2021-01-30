@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { CircularProgress, Box } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/core/styles'
+import styles from './styles'
 import TweetCard from '../TweetCard'
 
-function Feed({ screenName }) {
-  const classes = useStyles()
+function Feed({ classes, screenName }) {
   const [tweets, setTweets] = useState([])
   const [maxId, setMaxId] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -16,6 +16,7 @@ function Feed({ screenName }) {
     if (maxId) {
       setFetchingMore(true)
     }
+
     axios
       .get(
         `http://localhost:5000/${screenName}${maxId ? '?max_id=' + maxId : ''}`
@@ -25,11 +26,11 @@ function Feed({ screenName }) {
         if (maxId) {
           data = res.data.slice(1)
         }
-
         const newMaxId = data[data.length - 1].id
 
         setTweets([...tweets, ...data])
         setMaxId(newMaxId)
+
         setLoading(false)
         setIsBottom(false)
         setFetchingMore(false)
@@ -87,21 +88,4 @@ function Feed({ screenName }) {
   }
 }
 
-const useStyles = makeStyles({
-  loading: {
-    height: '100vh',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  feedContainer: {
-    paddingTop: 40,
-  },
-  fetchingMore: {
-    paddingTop: 40,
-    display: 'flex',
-    justifyContent: 'center',
-  },
-})
-
-export default Feed
+export default withStyles(styles)(Feed)
