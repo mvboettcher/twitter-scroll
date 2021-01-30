@@ -67,7 +67,7 @@ function Feed({ classes, screenName }) {
   if (loading) {
     return (
       <div className={classes.loading}>
-        <CircularProgress />
+        <CircularProgress data-testid="custom-element" color="secondary" />
       </div>
     )
   } else {
@@ -81,7 +81,7 @@ function Feed({ classes, screenName }) {
           className={classes.fetchingMore}
           display={fetchingMore ? 'block' : 'none'}
         >
-          <CircularProgress />
+          <CircularProgress color="secondary" />
         </Box>
       </div>
     )

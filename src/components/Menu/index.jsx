@@ -5,7 +5,7 @@ import styles from './styles'
 
 function Menu({ classes, value, handleChange }) {
   return (
-    <AppBar position="fixed">
+    <AppBar position="fixed" style={{ backgroundColor: '#333' }}>
       <Tabs centered value={value} onChange={handleChange}>
         <Tab label="Dogfish Head" value={0} index={0} />
         <Tab label="Backpacker Magazine" value={1} index={1} />
