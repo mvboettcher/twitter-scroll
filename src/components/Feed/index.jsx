@@ -5,7 +5,7 @@ import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 import TweetCard from '../TweetCard'
 
-function Feed({ classes, screenName }) {
+function Feed({ value, index, classes, screenName }) {
   const [tweets, setTweets] = useState([])
   const [maxId, setMaxId] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -59,33 +59,37 @@ function Feed({ classes, screenName }) {
   }, [])
 
   useEffect(() => {
-    if (isBottom) {
+    if (isBottom && value === index) {
       getTweets()
     }
-  }, [isBottom])
+  }, [isBottom, value])
 
-  if (loading) {
-    return (
-      <div className={classes.loading}>
-        <CircularProgress data-testid="custom-element" color="secondary" />
-      </div>
-    )
-  } else {
-    return (
-      <div className={classes.feedContainer}>
-        {tweets.map((tweet, idx) => (
-          <TweetCard tweet={tweet} key={idx} />
-        ))}
-        <Box
-          component="div"
-          className={classes.fetchingMore}
-          display={fetchingMore ? 'block' : 'none'}
-        >
-          <CircularProgress color="secondary" />
-        </Box>
-      </div>
-    )
-  }
+  return (
+    <Box
+      component="div"
+      style={{ marginBottom: 60 }}
+      display={value === index ? 'block' : 'none'}
+    >
+      {loading ? (
+        <div className={classes.loading}>
+          <CircularProgress data-testid="custom-element" color="secondary" />
+        </div>
+      ) : (
+        <div className={classes.feedContainer}>
+          {tweets.map((tweet, idx) => (
+            <TweetCard tweet={tweet} key={idx} />
+          ))}
+          <Box
+            component="div"
+            className={classes.fetchingMore}
+            display={fetchingMore ? 'block' : 'none'}
+          >
+            <CircularProgress color="secondary" />
+          </Box>
+        </div>
+      )}
+    </Box>
+  )
 }
 
 export default withStyles(styles)(Feed)
