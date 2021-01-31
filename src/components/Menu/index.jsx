@@ -10,7 +10,7 @@ function Menu({ value, handleChange, scrollTop }) {
         <Tab label="Dogfish Head" index={0} onClick={() => scrollTop(0)} />
         <Tab
           label="Backpacker Magazine"
-          index={1}
+          value={1}
           onClick={() => scrollTop(1)}
         />
       </Tabs>
