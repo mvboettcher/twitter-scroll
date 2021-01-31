@@ -5,17 +5,18 @@ import {
   Card,
   CardContent,
   CardMedia,
-  Grid,
   Typography,
   Link,
   Box,
+  Avatar,
 } from '@material-ui/core'
 import styles from './styles'
-import { displayPublishedDate, linkChecker } from '../../helpers'
+import { displayPublishedDate, tweetParser } from '../../helpers'
 
 function TweetCard({ classes, tweet }) {
   if (tweet) {
-    const tweetBody = linkChecker(tweet.full_text)
+    const tweetBody = tweetParser(tweet.full_text, tweet.display_text_range)
+    const profileImage = tweet.user.profile_image_url.replace('_normal', '')
 
     const image =
       tweet.entities && tweet.entities.media
@@ -30,13 +31,14 @@ function TweetCard({ classes, tweet }) {
     return (
       <Card className={classes.root}>
         <CardContent>
-          <Grid container className={classes.header}>
-            <Grid item xs={12} sm={6}>
+          <div className={classes.header}>
+            <Avatar alt={tweet.user.full_name} src={profileImage} />
+            <div>
               <Typography className={classes.userName}>
                 {tweet.user.name}
               </Typography>
-            </Grid>
-            <Grid item xs={12} sm={6} style={{ display: 'flex' }}>
+            </div>
+            <div style={{ display: 'flex' }}>
               <Typography
                 variant="body2"
                 color="textSecondary"
@@ -47,18 +49,49 @@ function TweetCard({ classes, tweet }) {
               <Typography color="textSecondary" className={classes.date}>
                 {displayPublishedDate(tweet.created_at)}
               </Typography>
-            </Grid>
-          </Grid>
+            </div>
+          </div>
           {tweetBody.map((t, idx) => {
             if (t.type === 'link') {
               return (
-                <Link key={idx} href={t.text} variant="body2">
+                <Link
+                  key={idx}
+                  href={t.text}
+                  variant="body2"
+                  style={{ fontWeight: 'bold' }}
+                >
                   {t.text}
                 </Link>
               )
+            } else if (t.type === 'hashtag') {
+              return (
+                <Typography
+                  key={idx}
+                  variant="body2"
+                  component="a"
+                  style={{ color: 'red' }}
+                  href={`https://twitter.com/hashtag/${t.text.slice(
+                    1
+                  )}?src=hashtag_click`}
+                >
+                  {t.text}
+                </Typography>
+              )
+            } else if (t.type === 'mention') {
+              return (
+                <Typography
+                  key={idx}
+                  variant="body2"
+                  component="a"
+                  style={{ color: 'green' }}
+                  href={`https://twitter.com/${t.text.slice(1)}`}
+                >
+                  {t.text}
+                </Typography>
+              )
             } else {
               return (
-                <Typography key={idx} variant="body2" component="p">
+                <Typography key={idx} variant="body2" component="span">
                   {t.text}
                 </Typography>
               )

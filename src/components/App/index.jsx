@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Container } from '@material-ui/core'
 import Menu from '../Menu'
 import Feed from '../Feed'
+import { twitterAccounts } from '../../API'
 
 function App() {
   const [value, setValue] = useState(0)
@@ -35,8 +36,9 @@ function App() {
   return (
     <Container maxWidth="sm" style={{ paddingBottom: 40 }}>
       <Menu value={value} scrollTop={scrollTop} handleChange={handleChange} />
-      <Feed value={value} index={0} screenName="dogfishbeer" />
-      <Feed value={value} index={1} screenName="BackpackerMag" />
+      {twitterAccounts.map((acct, index) => (
+        <Feed key={index} value={value} index={index} screenName={acct} />
+      ))}
     </Container>
   )
 }
