@@ -13,8 +13,8 @@ function App() {
   return (
     <Container maxWidth="sm" style={{ paddingBottom: 40 }}>
       <Menu value={value} handleChange={handleChange} />
-      {value === 0 && <Feed screenName="dogfishbeer" />}
-      {value === 1 && <Feed screenName="BackpackerMag" />}
+      <Feed value={value} index={0} screenName="dogfishbeer" />
+      <Feed value={value} index={1} screenName="BackpackerMag" />
     </Container>
   )
 }
