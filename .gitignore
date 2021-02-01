@@ -25,3 +25,5 @@ yarn-error.log*
 /src/data.js
 
 .eslintcache
+
+src/testData.js

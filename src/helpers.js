@@ -15,28 +15,23 @@ export function displayPublishedDate(date) {
   }
 }
 
-export function linkChecker(textToCheck) {
-  const expression = /(https?:\/\/)?[\w\-~]+(\.[\w\-~]+)+(\/[\w\-~@:%]*)*(#[\w-]*)?(\?[^\s]*)?/gi
-  const regex = new RegExp(expression)
-  const splitText = []
-  let match = ''
-  let startIndex = 0
+export function tweetParser(text, range) {
+  const textToCheck = text.slice(range[0], range[1] + 1)
+  const reUrl = /(\b(https?):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi
+  const reHash = /(?:\s|^)?#[A-Za-z0-9\-\.\_]+(?:\s|$)/g
+  const reMention = /([@][\w_-]+)/g
 
-  while ((match = regex.exec(textToCheck)) != null) {
-    splitText.push({
-      text: textToCheck.substr(startIndex, match.index - startIndex),
-      type: 'text',
-    })
+  const textArray = textToCheck.split(' ').map((t) => {
+    if (t.match(reUrl)) {
+      return { type: 'link', text: t + ' ' }
+    } else if (t.match(reHash)) {
+      return { type: 'hashtag', text: t + ' ' }
+    } else if (t.match(reMention)) {
+      return { type: 'mention', text: t + ' ' }
+    } else {
+      return { type: 'text', text: t + ' ' }
+    }
+  })
 
-    let cleanedLink = textToCheck.substr(match.index, match[0].length)
-    splitText.push({ text: cleanedLink, type: 'link' })
-
-    startIndex = match.index + match[0].length
-  }
-
-  if (startIndex < textToCheck.length) {
-    splitText.push({ text: textToCheck.substr(startIndex), type: 'text' })
-  }
-
-  return splitText
+  return textArray
 }
