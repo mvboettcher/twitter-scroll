@@ -1,6 +1,6 @@
 const styles = () => ({
   root: {
-    marginTop: 40,
+    marginTop: 16,
   },
   header: {
     paddingBottom: 10,

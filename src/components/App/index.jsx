@@ -17,9 +17,7 @@ function App() {
   }
 
   function scrollTop(num) {
-    if (num === value) {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
+    window.scrollTo({ top: 0, behavior: num === value ? 'smooth' : 'auto' })
   }
 
   useEffect(() => {

@@ -72,7 +72,7 @@ function Feed({ value, index, classes, screenName }) {
       ) : (
         <div>
           {tweets.map((tweet, idx) => (
-            <TweetCard data-testid="tweet-card" tweet={tweet} key={idx} />
+            <TweetCard data-testid="tweet-card" data={tweet} key={idx} />
           ))}
           <Box
             component="div"
