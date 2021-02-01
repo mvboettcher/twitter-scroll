@@ -16,7 +16,7 @@ export function displayPublishedDate(date) {
 }
 
 export function tweetParser(text, range) {
-  const textToCheck = text.slice(range[0], range[1] + 1)
+  const textToCheck = text.slice(0, range[1] + 1)
   const reUrl = /(\b(https?):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi
   const reHash = /(?:\s|^)?#[A-Za-z0-9\-\.\_]+(?:\s|$)/g
   const reMention = /([@][\w_-]+)/g

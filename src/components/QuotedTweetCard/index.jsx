@@ -12,11 +12,10 @@ import {
   Grid,
 } from '@material-ui/core'
 import RepeatIcon from '@material-ui/icons/Repeat'
-import QuotedTweetCard from '../QuotedTweetCard'
 import styles from './styles'
 import { displayPublishedDate, tweetParser } from '../../helpers'
 
-function TweetCard({ classes, data }) {
+function QuotedTweetCard({ classes, data }) {
   if (data) {
     const tweet = data.retweeted_status ? data.retweeted_status : data
 
@@ -32,8 +31,6 @@ function TweetCard({ classes, data }) {
       tweet.extended_entities && tweet.extended_entities.media
         ? tweet.extended_entities.media.filter((m) => m.type === 'video')[0]
         : null
-
-    const quotedTweet = tweet.quoted_status ? tweet.quoted_status : null
 
     return (
       <Card className={classes.root}>
@@ -111,7 +108,6 @@ function TweetCard({ classes, data }) {
               )
             }
           })}
-          {quotedTweet && <QuotedTweetCard data={quotedTweet} />}
           <CardMedia className={classes.mediaContainer}>
             {video && (
               <ReactPlayer
@@ -140,4 +136,4 @@ function TweetCard({ classes, data }) {
   }
 }
 
-export default withStyles(styles)(TweetCard)
+export default withStyles(styles)(QuotedTweetCard)
