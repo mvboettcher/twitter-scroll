@@ -4,6 +4,7 @@ import { CircularProgress, Box } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
 import TweetCard from '../TweetCard'
+import { fetchTweets } from '../../API'
 
 function Feed({ value, index, classes, screenName }) {
   const [tweets, setTweets] = useState([])
@@ -16,26 +17,20 @@ function Feed({ value, index, classes, screenName }) {
     if (maxId) {
       setFetchingMore(true)
     }
+    fetchTweets(screenName, maxId).then((res) => {
+      let data = res
+      if (maxId) {
+        data = res.slice(1)
+      }
+      const newMaxId = data[data.length - 1].id
 
-    axios
-      .get(
-        `http://localhost:5000/${screenName}${maxId ? '?max_id=' + maxId : ''}`
-      )
-      .then((res) => {
-        let data = res.data
-        if (maxId) {
-          data = res.data.slice(1)
-        }
-        const newMaxId = data[data.length - 1].id
+      setTweets([...tweets, ...data])
+      setMaxId(newMaxId)
 
-        setTweets([...tweets, ...data])
-        setMaxId(newMaxId)
-
-        setLoading(false)
-        setIsBottom(false)
-        setFetchingMore(false)
-      })
-      .catch((err) => console.log(err))
+      setLoading(false)
+      setIsBottom(false)
+      setFetchingMore(false)
+    })
   }
 
   function handleScroll() {
@@ -54,6 +49,7 @@ function Feed({ value, index, classes, screenName }) {
 
   useEffect(() => {
     getTweets()
+
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
@@ -72,19 +68,19 @@ function Feed({ value, index, classes, screenName }) {
     >
       {loading ? (
         <div className={classes.loading}>
-          <CircularProgress data-testid="custom-element" color="secondary" />
+          <CircularProgress data-testid="loading-tweets" color="secondary" />
         </div>
       ) : (
         <div className={classes.feedContainer}>
           {tweets.map((tweet, idx) => (
-            <TweetCard tweet={tweet} key={idx} />
+            <TweetCard data-testid="tweet-card" tweet={tweet} key={idx} />
           ))}
           <Box
             component="div"
             className={classes.fetchingMore}
             display={fetchingMore ? 'block' : 'none'}
           >
-            <CircularProgress color="secondary" />
+            <CircularProgress data-testid="fetching-more" color="secondary" />
           </Box>
         </div>
       )}
