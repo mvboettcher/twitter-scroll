@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
 import { CircularProgress, Box } from '@material-ui/core'
 import { withStyles } from '@material-ui/core/styles'
 import styles from './styles'
@@ -63,7 +62,7 @@ function Feed({ value, index, classes, screenName }) {
   return (
     <Box
       component="div"
-      style={{ marginBottom: 60 }}
+      className={classes.feedContainer}
       display={value === index ? 'block' : 'none'}
     >
       {loading ? (
@@ -71,7 +70,7 @@ function Feed({ value, index, classes, screenName }) {
           <CircularProgress data-testid="loading-tweets" color="secondary" />
         </div>
       ) : (
-        <div className={classes.feedContainer}>
+        <div>
           {tweets.map((tweet, idx) => (
             <TweetCard data-testid="tweet-card" tweet={tweet} key={idx} />
           ))}

@@ -7,7 +7,8 @@ const styles = () => {
       alignItems: 'center',
     },
     feedContainer: {
-      paddingTop: 40,
+      paddingTop: 60,
+      marginBottom: 60,
     },
     fetchingMore: {
       paddingTop: 40,

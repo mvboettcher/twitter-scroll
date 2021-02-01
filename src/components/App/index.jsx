@@ -34,7 +34,7 @@ function App() {
   }
 
   return (
-    <Container maxWidth="sm" style={{ paddingBottom: 40 }}>
+    <Container maxWidth="sm">
       <Menu value={value} scrollTop={scrollTop} handleChange={handleChange} />
       {twitterAccounts.map((acct, index) => (
         <Feed key={index} value={value} index={index} screenName={acct} />

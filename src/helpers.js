@@ -25,9 +25,17 @@ export function tweetParser(text, range) {
     if (t.match(reUrl)) {
       return { type: 'link', text: t + ' ' }
     } else if (t.match(reHash)) {
-      return { type: 'hashtag', text: t + ' ' }
+      return {
+        type: 'hashtag',
+        url: `https://twitter.com/hashtag/${t.slice(1)}?src=hashtag_click`,
+        text: t + ' ',
+      }
     } else if (t.match(reMention)) {
-      return { type: 'mention', text: t + ' ' }
+      return {
+        type: 'mention',
+        url: `https://twitter.com/${t.slice(1)}`,
+        text: t + ' ',
+      }
     } else {
       return { type: 'text', text: t + ' ' }
     }

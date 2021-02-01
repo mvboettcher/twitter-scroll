@@ -65,29 +65,25 @@ function TweetCard({ classes, tweet }) {
               )
             } else if (t.type === 'hashtag') {
               return (
-                <Typography
+                <Link
                   key={idx}
+                  href={t.url}
                   variant="body2"
-                  component="a"
-                  style={{ color: 'red' }}
-                  href={`https://twitter.com/hashtag/${t.text.slice(
-                    1
-                  )}?src=hashtag_click`}
+                  style={{ fontWeight: 'bold' }}
                 >
                   {t.text}
-                </Typography>
+                </Link>
               )
             } else if (t.type === 'mention') {
               return (
-                <Typography
+                <Link
                   key={idx}
+                  href={t.url}
                   variant="body2"
-                  component="a"
-                  style={{ color: 'green' }}
-                  href={`https://twitter.com/${t.text.slice(1)}`}
+                  style={{ fontWeight: 'bold' }}
                 >
                   {t.text}
-                </Typography>
+                </Link>
               )
             } else {
               return (
